@@ -1,0 +1,41 @@
+cargo-features = ["profile-rustflags"]
+
+[package]
+name = "microhash"
+description = "Collection of hash implementations"
+version = "0.0.1"
+authors = ["Christian Sdunek <me@systemcluster.me>"]
+license = "BSD-2-Clause"
+repository = "https://github.com/Systemcluster/microhash"
+readme = "README.md"
+edition = "2021"
+resolver = "2"
+publish = false
+
+[lib]
+name = "microhash"
+path = "src/lib.rs"
+
+[features]
+default = ["std"]
+std = []
+
+[profile.test]
+rustflags = [
+    "-Ctarget-cpu=native",
+    "-Ctarget-feature=-aes",
+]
+
+[profile.bench]
+rustflags = [
+    "-Ctarget-cpu=native",
+    "-Ctarget-feature=+aes",
+]
+
+[dependencies]
+byteorder = { version = "1.5" }
+const-random = { version = "0.1.18" }
+
+[dev-dependencies]
+ahash = { version = "0.8.11" }
+xxhash-rust = { version = "0.8.10", features = ["xxh3", "const_xxh3"] }
